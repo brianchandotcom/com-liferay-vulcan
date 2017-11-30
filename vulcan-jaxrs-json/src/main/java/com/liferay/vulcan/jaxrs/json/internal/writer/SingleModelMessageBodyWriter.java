@@ -114,6 +114,8 @@ public class SingleModelMessageBodyWriter<T>
 		RequestInfo requestInfo = RequestInfo.create(
 			builder -> builder.httpHeaders(
 				_httpHeaders
+			).httpServletRequest(
+				_httpServletRequest
 			).serverURL(
 				getServerURL()
 			).embedded(

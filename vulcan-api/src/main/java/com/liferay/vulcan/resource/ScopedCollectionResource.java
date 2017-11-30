@@ -34,8 +34,7 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  *
  * <p>
  * Representors created by the method {@link
- * CollectionResource#buildRepresentor(
- * com.liferay.vulcan.resource.builder.Representor.Builder)} hold all the
+ * CollectionResource#buildRepresentor(Representor.Builder)} hold all the
  * information needed to write your domain models' hypermedia representations.
  * </p>
  *
@@ -47,7 +46,7 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  * </p>
  *
  * @author Alejandro Hernández
- * @see    com.liferay.vulcan.resource.builder.Representor.Builder
+ * @see    Representor.Builder
  * @see    com.liferay.vulcan.resource.builder.RoutesBuilder
  */
 @ConsumerType

@@ -25,7 +25,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -60,7 +59,9 @@ public class FolderScopedCollectionResource
 	public Representor<DLFolder, LongIdentifier> buildRepresentor(
 		Representor.Builder<DLFolder, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"Folder"
+		).identifier(
 			dlFolder -> dlFolder::getFolderId
 		).addBidirectionalModel(
 			"webSite", "folders", WebSite.class, this::_getWebSiteOptional,
@@ -75,8 +76,6 @@ public class FolderScopedCollectionResource
 			"name", DLFolder::getName
 		).addString(
 			"path", this::_getPath
-		).addType(
-			"Folder"
 		).build();
 	}
 

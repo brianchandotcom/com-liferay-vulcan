@@ -51,7 +51,9 @@ public class MockRepresentorCreator {
 		Builder<FirstEmbeddedModel, StringIdentifier> builder = new Builder<>(
 			StringIdentifier.class);
 
-		return builder.identifier(
+		return builder.types(
+			"Type"
+		).identifier(
 			model -> model::getId
 		).addBinary(
 			"binary", __ -> null
@@ -72,8 +74,6 @@ public class MockRepresentorCreator {
 			model -> (StringIdentifier)model::getId
 		).addString(
 			"string", __ -> "A string"
-		).addType(
-			"Type"
 		).build();
 	}
 
@@ -92,7 +92,9 @@ public class MockRepresentorCreator {
 			StringIdentifier.class);
 
 		Builder<RootModel, StringIdentifier>.FirstStep firstStepBuilder =
-			builder.identifier(
+			builder.types(
+				"Type 1", "Type 2"
+			).identifier(
 				model -> model::getId
 			).addBinary(
 				"binary1", __ -> null
@@ -140,10 +142,6 @@ public class MockRepresentorCreator {
 				"string1", __ -> "Live long and prosper"
 			).addString(
 				"string2", __ -> "Hypermedia"
-			).addType(
-				"Type 1"
-			).addType(
-				"Type 2"
 			);
 
 		if (activateNulls) {
@@ -181,7 +179,9 @@ public class MockRepresentorCreator {
 		Builder<SecondEmbeddedModel, StringIdentifier> builder = new Builder<>(
 			StringIdentifier.class);
 
-		return builder.identifier(
+		return builder.types(
+			"Type"
+		).identifier(
 			model -> model::getId
 		).addBinary(
 			"binary", __ -> null
@@ -202,8 +202,6 @@ public class MockRepresentorCreator {
 			model -> (StringIdentifier)model::getId
 		).addString(
 			"string", __ -> "A string"
-		).addType(
-			"Type"
 		).build();
 	}
 
@@ -219,7 +217,9 @@ public class MockRepresentorCreator {
 		Builder<ThirdEmbeddedModel, StringIdentifier> builder = new Builder<>(
 			StringIdentifier.class);
 
-		return builder.identifier(
+		return builder.types(
+			"Type"
+		).identifier(
 			model -> model::getId
 		).build();
 	}

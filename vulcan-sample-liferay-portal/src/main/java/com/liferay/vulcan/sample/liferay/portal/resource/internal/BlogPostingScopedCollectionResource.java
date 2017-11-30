@@ -30,7 +30,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -77,7 +76,9 @@ public class BlogPostingScopedCollectionResource
 	public Representor<BlogsEntry, LongIdentifier> buildRepresentor(
 		Representor.Builder<BlogsEntry, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"BlogPosting"
+		).identifier(
 			blogsEntry -> blogsEntry::getEntryId
 		).addBidirectionalModel(
 			"webSite", "blogs", WebSite.class, this::_getWebSiteOptional,
@@ -111,8 +112,6 @@ public class BlogPostingScopedCollectionResource
 			"fileFormat", blogsEntry -> "text/html"
 		).addString(
 			"headline", BlogsEntry::getTitle
-		).addType(
-			"BlogPosting"
 		).build();
 	}
 

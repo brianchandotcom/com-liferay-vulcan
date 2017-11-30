@@ -53,11 +53,11 @@ public class ProblemJSONErrorMessageMapperTest {
 		Conditions conditions = builder.where(
 			"detail", is(aJsonString(equalTo("A description")))
 		).where(
+			"status", is(aJsonInt(equalTo(404)))
+		).where(
 			"title", is(aJsonString(equalTo("A title")))
 		).where(
 			"type", is(aJsonString(equalTo("A type")))
-		).where(
-			"status", is(aJsonInt(equalTo(404)))
 		).build();
 
 		assertThat(error, is(aJsonObjectStringWith(conditions)));

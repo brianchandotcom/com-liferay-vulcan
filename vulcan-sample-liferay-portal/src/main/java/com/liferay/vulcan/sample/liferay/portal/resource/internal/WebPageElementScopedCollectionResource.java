@@ -30,7 +30,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -75,7 +74,9 @@ public class WebPageElementScopedCollectionResource
 		Representor.Builder<JournalArticle, LongIdentifier>
 			representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"WebPageElement"
+		).identifier(
 			journalArticle -> journalArticle::getId
 		).addBidirectionalModel(
 			"webSite", "webPageElements", WebSite.class,
@@ -98,8 +99,6 @@ public class WebPageElementScopedCollectionResource
 			"text", JournalArticle::getContent
 		).addString(
 			"title", JournalArticle::getTitle
-		).addType(
-			"WebPageElement"
 		).build();
 	}
 

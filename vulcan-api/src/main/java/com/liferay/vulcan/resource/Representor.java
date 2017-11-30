@@ -208,17 +208,16 @@ public class Representor<T, U extends Identifier> {
 		}
 
 		/**
-		 * Provides a lambda function that can be used to obtain a model's
-		 * {@link Identifier}.
+		 * Adds a type for the model.
 		 *
-		 * @param  identifierFunction lambda function used to obtain a model's
-		 *         identifier
-		 * @return the builder's next step
+		 * @param  type the type name
+		 * @return the builder's step
 		 */
-		public FirstStep identifier(Function<T, U> identifierFunction) {
-			_representor._identifierFunction = identifierFunction;
+		public IdentifierStep types(String type, String... types) {
+			_representor._types.add(type);
+			Collections.addAll(_representor._types, types);
 
-			return new FirstStep();
+			return new IdentifierStep();
 		}
 
 		public class FirstStep {
@@ -431,18 +430,6 @@ public class Representor<T, U extends Identifier> {
 			}
 
 			/**
-			 * Adds a type for the model. Multiple types are allowed.
-			 *
-			 * @param  type the type name
-			 * @return the builder's step
-			 */
-			public FirstStep addType(String type) {
-				_representor._types.add(type);
-
-				return this;
-			}
-
-			/**
 			 * Constructs and returns a {@link Representor} instance with the
 			 * information provided to the builder.
 			 *
@@ -450,6 +437,24 @@ public class Representor<T, U extends Identifier> {
 			 */
 			public Representor<T, U> build() {
 				return _representor;
+			}
+
+		}
+
+		public class IdentifierStep {
+
+			/**
+			 * Provides a lambda function that can be used to obtain a model's
+			 * {@link Identifier}.
+			 *
+			 * @param  identifierFunction lambda function used to obtain a
+			 *         model's identifier
+			 * @return the builder's next step
+			 */
+			public FirstStep identifier(Function<T, U> identifierFunction) {
+				_representor._identifierFunction = identifierFunction;
+
+				return new FirstStep();
 			}
 
 		}

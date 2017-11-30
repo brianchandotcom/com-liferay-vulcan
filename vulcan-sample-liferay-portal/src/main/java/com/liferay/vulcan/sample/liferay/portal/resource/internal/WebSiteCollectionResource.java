@@ -19,7 +19,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
@@ -50,14 +49,14 @@ public class WebSiteCollectionResource
 	public Representor<WebSite, LongIdentifier> buildRepresentor(
 		Representor.Builder<WebSite, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"WebSite"
+		).identifier(
 			WebSite::getWebSiteLongIdentifier
 		).addLocalizedString(
 			"name", WebSite::getName
 		).addString(
 			"description", WebSite::getDescription
-		).addType(
-			"WebSite"
 		).build();
 	}
 

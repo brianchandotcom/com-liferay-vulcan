@@ -17,6 +17,7 @@ package com.liferay.vulcan.application.internal.endpoint;
 import com.google.gson.JsonObject;
 
 import com.liferay.vulcan.alias.BinaryFunction;
+import com.liferay.vulcan.documentation.Documentation;
 import com.liferay.vulcan.endpoint.RootEndpoint;
 import com.liferay.vulcan.error.VulcanDeveloperError;
 import com.liferay.vulcan.pagination.Page;
@@ -50,6 +51,7 @@ import javax.ws.rs.NotAllowedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -69,12 +71,14 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(name);
 
 		return routesTry.map(
-			Routes::getPostSingleModelFunctionOptional
+			Routes::getCreateItemFunctionOptional
 		).map(
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
 			_getNotAllowedExceptionSupplier("POST", name)
+		).map(
+			function -> function.apply(_httpServletRequest)
 		).map(
 			function -> function.apply(new RootIdentifier() {})
 		).map(
@@ -89,11 +93,22 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(nestedName);
 
 		return routesTry.map(
-			Routes::getPostSingleModelFunctionOptional
+			Routes::getCreateItemFunctionOptional
 		).map(
 			Optional::get
+		).map(
+			function -> function.apply(_httpServletRequest)
 		).flatMap(
-			_getAddNestedCollectionItemFunction(name, id, nestedName)
+			postFunction -> {
+				Try<SingleModel<T>> parentSingleModelTry =
+					getCollectionItemSingleModelTry(name, id);
+
+				return parentSingleModelTry.map(
+					_getIdentifierFunction(nestedName)
+				).map(
+					optional -> optional.map(postFunction)
+				);
+			}
 		).map(
 			Optional::get
 		).map(
@@ -110,18 +125,20 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<Object>> routesTry = _getRoutesTry(name);
 
 		routesTry.map(
-			Routes::getDeleteSingleModelConsumerOptional
+			Routes::getDeleteConsumerOptional
 		).map(
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
 			_getNotAllowedExceptionSupplier("DELETE", name + "/" + id)
 		).getUnchecked(
+		).apply(
+			_httpServletRequest
 		).accept(
 			new Path(name, id)
 		);
 
-		Response.ResponseBuilder responseBuilder = Response.noContent();
+		ResponseBuilder responseBuilder = Response.noContent();
 
 		return responseBuilder.build();
 	}
@@ -160,12 +177,14 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(name);
 
 		return routesTry.map(
-			Routes::getSingleModelFunctionOptional
+			Routes::getItemFunctionOptional
 		).map(
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
 			_getNotFoundExceptionSupplier(name + "/" + id)
+		).map(
+			function -> function.apply(_httpServletRequest)
 		).map(
 			function -> function.apply(new Path(name, id))
 		);
@@ -176,16 +195,23 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(name);
 
 		return routesTry.map(
-			Routes::getPageFunctionOptional
+			Routes::getGetPageFunctionOptional
 		).map(
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class, _getNotFoundExceptionSupplier(name)
 		).map(
+			function -> function.apply(_httpServletRequest)
+		).map(
 			function -> function.apply(new Path())
 		).map(
 			function -> function.apply(new RootIdentifier() {})
 		);
+	}
+
+	@Override
+	public Documentation getDocumentation() {
+		return _collectionResourceManager.getDocumentation();
 	}
 
 	@Override
@@ -203,7 +229,7 @@ public class RootEndpointImpl implements RootEndpoint {
 
 		rootCollectionResourceNames.forEach(
 			name -> {
-				String url = serverURL.getServerURL() + "/p/" + name;
+				String url = serverURL.get() + "/p/" + name;
 
 				JsonObject jsonObject = new JsonObject();
 
@@ -226,9 +252,11 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(nestedName);
 
 		return routesTry.map(
-			Routes::getPageFunctionOptional
+			Routes::getGetPageFunctionOptional
 		).map(
 			Optional::get
+		).map(
+			function -> function.apply(_httpServletRequest)
 		).map(
 			function -> function.apply(new Path(name, id))
 		).flatMap(
@@ -249,35 +277,19 @@ public class RootEndpointImpl implements RootEndpoint {
 		Try<Routes<T>> routesTry = _getRoutesTry(name);
 
 		return routesTry.map(
-			Routes::getUpdateSingleModelFunctionOptional
+			Routes::getUpdateItemFunctionOptional
 		).map(
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
 			_getNotAllowedExceptionSupplier("PUT", name + "/" + id)
 		).map(
+			function -> function.apply(_httpServletRequest)
+		).map(
 			function -> function.apply(new Path(name, id))
 		).map(
 			function -> function.apply(body)
 		);
-	}
-
-	private <T> ThrowableFunction<Function<Identifier,
-		Function<Map<String, Object>, SingleModel<T>>>,
-			Try<Optional<Function<Map<String, Object>, SingleModel<T>>>>>
-				_getAddNestedCollectionItemFunction(
-					String name, String id, String nestedName) {
-
-		return postFunction -> {
-			Try<SingleModel<T>> parentSingleModelTry =
-				getCollectionItemSingleModelTry(name, id);
-
-			return parentSingleModelTry.map(
-				_getIdentifierFunction(nestedName)
-			).map(
-				optional -> optional.map(postFunction)
-			);
-		};
 	}
 
 	private <T> Predicate<RelatedCollection<T, ?>>
@@ -368,8 +380,7 @@ public class RootEndpointImpl implements RootEndpoint {
 
 	private <T> Try<Routes<T>> _getRoutesTry(String name) {
 		Try<Optional<Routes<T>>> optionalTry = Try.success(
-			_collectionResourceManager.getRoutesOptional(
-				name, _httpServletRequest));
+			_collectionResourceManager.getRoutesOptional(name));
 
 		return optionalTry.map(
 			Optional::get

@@ -36,7 +36,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -71,14 +70,14 @@ public class CommentScopedCollectionResource
 	public Representor<Comment, LongIdentifier> buildRepresentor(
 		Representor.Builder<Comment, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"Comment"
+		).identifier(
 			comment -> comment::getCommentId
 		).addEmbeddedModel(
 			"author", User.class, this::_getUserOptional
 		).addString(
 			"text", Comment::getBody
-		).addType(
-			"Comment"
 		).build();
 	}
 

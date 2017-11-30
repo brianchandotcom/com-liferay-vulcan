@@ -49,7 +49,7 @@ Absolutely! If you don't want to create your own API for now, you can use our te
 
 Simply use your favorite REST-request client to make a GET request to:
 
-    http://vulcan-vulcansample.wedeploy.io
+    http://vulcansample.wedeploy.io
 
 To use Vulcan Architect APIs, you must specify an `accept` HTTP header. If you want to try a Hypermedia representation format, you can start with the following to order JSON-LD:
 

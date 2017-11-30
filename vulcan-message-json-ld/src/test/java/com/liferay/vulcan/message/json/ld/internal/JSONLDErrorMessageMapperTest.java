@@ -51,13 +51,13 @@ public class JSONLDErrorMessageMapperTest {
 		Conditions.Builder builder = new Conditions.Builder();
 
 		Conditions conditions = builder.where(
-			"description", is(aJsonString(equalTo("A description")))
-		).where(
-			"title", is(aJsonString(equalTo("A title")))
-		).where(
 			"@type", is(aJsonString(equalTo("A type")))
 		).where(
+			"description", is(aJsonString(equalTo("A description")))
+		).where(
 			"statusCode", is(aJsonInt(equalTo(404)))
+		).where(
+			"title", is(aJsonString(equalTo("A title")))
 		).build();
 
 		assertThat(error, is(aJsonObjectStringWith(conditions)));

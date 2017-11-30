@@ -18,7 +18,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -50,7 +49,9 @@ public class BlogPostingCommentScopedCollectionResource
 		Representor.Builder<BlogPostingComment, LongIdentifier>
 			representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"Comment"
+		).identifier(
 			blogPostingComment -> blogPostingComment::getBlogPostingCommentId
 		).addDate(
 			"dateCreated", BlogPostingComment::getCreateDate
@@ -62,8 +63,6 @@ public class BlogPostingCommentScopedCollectionResource
 				Person.getPerson(blogPostingComment.getAuthorId())
 		).addString(
 			"text", BlogPostingComment::getContent
-		).addType(
-			"Comment"
 		).build();
 	}
 

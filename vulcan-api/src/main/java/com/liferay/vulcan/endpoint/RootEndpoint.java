@@ -16,6 +16,7 @@ package com.liferay.vulcan.endpoint;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.vulcan.documentation.Documentation;
 import com.liferay.vulcan.pagination.Page;
 import com.liferay.vulcan.pagination.SingleModel;
 import com.liferay.vulcan.result.Try;
@@ -128,6 +129,10 @@ public interface RootEndpoint {
 	@Path("/p/{name}")
 	public <T> Try<Page<T>> getCollectionPageTry(
 		@PathParam("name") String name);
+
+	@GET
+	@Path("/doc")
+	public Documentation getDocumentation();
 
 	/**
 	 * Returns the string representation of the application's home.

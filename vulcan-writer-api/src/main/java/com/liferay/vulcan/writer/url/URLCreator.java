@@ -46,8 +46,7 @@ public final class URLCreator {
 	public static String createBinaryURL(
 		ServerURL serverURL, String binaryId, Path path) {
 
-		return String.join(
-			"/", serverURL.getServerURL(), "b", path.asURI(), binaryId);
+		return String.join("/", serverURL.get(), "b", path.asURI(), binaryId);
 	}
 
 	/**
@@ -83,8 +82,7 @@ public final class URLCreator {
 	public static String createCollectionURL(
 		ServerURL serverURL, Path path, String name) {
 
-		return String.join(
-			"/", serverURL.getServerURL(), "p", path.asURI(), name);
+		return String.join("/", serverURL.get(), "p", path.asURI(), name);
 	}
 
 	/**
@@ -96,7 +94,7 @@ public final class URLCreator {
 	 * @review
 	 */
 	public static String createSingleURL(ServerURL serverURL, Path path) {
-		return serverURL.getServerURL() + "/p/" + path.asURI();
+		return serverURL.get() + "/p/" + path.asURI();
 	}
 
 	private URLCreator() {

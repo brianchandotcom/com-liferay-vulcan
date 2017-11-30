@@ -30,7 +30,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
@@ -70,7 +69,9 @@ public class PersonCollectionResource
 	public Representor<User, LongIdentifier> buildRepresentor(
 		Representor.Builder<User, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"Person"
+		).identifier(
 			user -> user::getUserId
 		).addDate(
 			"birthDate", PersonCollectionResource::_getBirthday
@@ -90,8 +91,6 @@ public class PersonCollectionResource
 			"jobTitle", User::getJobTitle
 		).addString(
 			"name", User::getFullName
-		).addType(
-			"Person"
 		).build();
 	}
 

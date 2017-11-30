@@ -29,6 +29,6 @@ public interface ServerURL {
 	 * @return a string URL constructed from the HTTP servlet request
 	 * @review
 	 */
-	public String getServerURL();
+	public String get();
 
 }

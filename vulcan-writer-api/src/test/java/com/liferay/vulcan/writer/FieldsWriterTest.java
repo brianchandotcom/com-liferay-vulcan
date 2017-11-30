@@ -80,10 +80,12 @@ public class FieldsWriterTest {
 			Optional.empty()
 		);
 
+		Language language = Mockito.mock(Language.class);
+
 		Mockito.when(
 			_requestInfo.getLanguageOptional()
 		).thenReturn(
-			Optional.of(Mockito.mock(Language.class))
+			Optional.of(language)
 		);
 
 		_fieldsWriter = new FieldsWriter<>(

@@ -16,7 +16,6 @@ package com.liferay.vulcan.sample.liferay.portal.resource.internal;
 
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -45,7 +44,9 @@ public class AggregateRatingScopedCollectionResource
 			Representor.Builder<AggregateRating, AggregateRatingIdentifier>
 				representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"AggregateRating"
+		).identifier(
 			AggregateRating::getAggregateRatingIdentifier
 		).addNumber(
 			"bestRating", aggregateRating -> 1
@@ -55,8 +56,6 @@ public class AggregateRatingScopedCollectionResource
 			"ratingValue", AggregateRating::getRatingValue
 		).addNumber(
 			"worstRating", aggregateRating -> 0
-		).addType(
-			"AggregateRating"
 		).build();
 	}
 

@@ -62,9 +62,9 @@ public class IsJsonObjectStringMatcherTest {
 	@Test
 	public void testInvalidJsonObjectWithMultiConditionUpdatesDescription() {
 		Conditions conditions = _builder.where(
-			"vulcan", is(aJsonString(equalTo("Live long and prosper")))
-		).where(
 			"geek", is(aJsonBoolean(true))
+		).where(
+			"vulcan", is(aJsonString(equalTo("Live long and prosper")))
 		).build();
 
 		Matcher<String> stringMatcher = aJsonObjectStringWith(conditions);

@@ -50,7 +50,9 @@ public class PersonCollectionResource
 	public Representor<Person, LongIdentifier> buildRepresentor(
 		Representor.Builder<Person, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"Person"
+		).identifier(
 			person -> person::getPersonId
 		).addDate(
 			"birthDate", Person::getBirthDate
@@ -68,8 +70,6 @@ public class PersonCollectionResource
 			"jobTitle", Person::getJobTitle
 		).addString(
 			"name", Person::getFullName
-		).addType(
-			"Person"
 		).build();
 	}
 

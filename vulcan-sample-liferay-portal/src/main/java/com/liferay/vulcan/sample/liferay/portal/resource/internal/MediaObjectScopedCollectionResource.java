@@ -29,7 +29,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.ScopedCollectionResource;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
@@ -61,7 +60,9 @@ public class MediaObjectScopedCollectionResource
 	public Representor<DLFileEntry, LongIdentifier> buildRepresentor(
 		Representor.Builder<DLFileEntry, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"MediaObject"
+		).identifier(
 			dlFileEntry -> dlFileEntry::getFileEntryId
 		).addBidirectionalModel(
 			"folder", "mediaObjects", DLFolder.class,
@@ -87,8 +88,6 @@ public class MediaObjectScopedCollectionResource
 			"name", DLFileEntry::getName
 		).addString(
 			"text", DLFileEntry::getDescription
-		).addType(
-			"MediaObject"
 		).build();
 	}
 

@@ -93,6 +93,8 @@ public class MockSingleModelWriter {
 		return RequestInfo.create(
 			builder -> builder.httpHeaders(
 				httpHeaders
+			).httpServletRequest(
+				null
 			).serverURL(
 				() -> "localhost"
 			).embedded(

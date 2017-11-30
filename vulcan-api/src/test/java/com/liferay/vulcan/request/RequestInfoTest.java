@@ -26,6 +26,8 @@ import com.liferay.vulcan.response.control.Embedded;
 import com.liferay.vulcan.response.control.Fields;
 import com.liferay.vulcan.url.ServerURL;
 
+import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.Before;
@@ -41,6 +43,7 @@ public class RequestInfoTest {
 	@Before
 	public void setUp() {
 		_httpHeaders = Mockito.mock(HttpHeaders.class);
+		_httpServletRequest = Mockito.mock(HttpServletRequest.class);
 		_serverURL = Mockito.mock(ServerURL.class);
 		_embedded = Mockito.mock(Embedded.class);
 		_fields = Mockito.mock(Fields.class);
@@ -52,6 +55,8 @@ public class RequestInfoTest {
 		RequestInfo requestInfo = RequestInfo.create(
 			builder -> builder.httpHeaders(
 				_httpHeaders
+			).httpServletRequest(
+				_httpServletRequest
 			).serverURL(
 				_serverURL
 			).embedded(
@@ -63,6 +68,9 @@ public class RequestInfoTest {
 			).build());
 
 		assertThat(requestInfo.getHttpHeaders(), is(equalTo(_httpHeaders)));
+		assertThat(
+			requestInfo.getHttpServletRequest(),
+			is(equalTo(_httpServletRequest)));
 		assertThat(requestInfo.getServerURL(), is(equalTo(_serverURL)));
 		assertThat(
 			requestInfo.getEmbeddedOptional(),
@@ -80,6 +88,8 @@ public class RequestInfoTest {
 		RequestInfo requestInfo = RequestInfo.create(
 			builder -> builder.httpHeaders(
 				_httpHeaders
+			).httpServletRequest(
+				_httpServletRequest
 			).serverURL(
 				_serverURL
 			).build());
@@ -92,6 +102,7 @@ public class RequestInfoTest {
 	private Embedded _embedded;
 	private Fields _fields;
 	private HttpHeaders _httpHeaders;
+	private HttpServletRequest _httpServletRequest;
 	private Language _language;
 	private ServerURL _serverURL;
 

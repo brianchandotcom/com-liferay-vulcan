@@ -16,15 +16,13 @@ package com.liferay.vulcan.resource;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.vulcan.pagination.Page;
-import com.liferay.vulcan.pagination.SingleModel;
-import com.liferay.vulcan.resource.identifier.Identifier;
-import com.liferay.vulcan.uri.Path;
+import com.liferay.vulcan.alias.routes.CreateItemFunction;
+import com.liferay.vulcan.alias.routes.DeleteItemConsumer;
+import com.liferay.vulcan.alias.routes.GetItemFunction;
+import com.liferay.vulcan.alias.routes.GetPageFunction;
+import com.liferay.vulcan.alias.routes.UpdateItemFunction;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Holds information about the routes supported for a {@link
@@ -44,6 +42,17 @@ import java.util.function.Function;
 public interface Routes<T> {
 
 	/**
+	 * Returns the function that is used to create the single model of a {@link
+	 * CollectionResource}, if the endpoint was added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder} and the function
+	 * therefore exists. Returns {@code Optional#empty()} otherwise.
+	 *
+	 * @return the function that uses a POST request to create the single model,
+	 *         if the function exists; {@code Optional#empty()} otherwise
+	 */
+	public Optional<CreateItemFunction<T>> getCreateItemFunctionOptional();
+
+	/**
 	 * Returns the function used to remove a single model of a {@link
 	 * CollectionResource}, if the endpoint was added through the {@link
 	 * com.liferay.vulcan.resource.builder.RoutesBuilder} and the function
@@ -52,10 +61,10 @@ public interface Routes<T> {
 	 * @return the function used to remove a single model, if the function
 	 *         exists; {@code Optional#empty()} otherwise
 	 */
-	public Optional<Consumer<Path>> getDeleteSingleModelConsumerOptional();
+	public Optional<DeleteItemConsumer> getDeleteConsumerOptional();
 
 	/**
-	 * Returns the function used to create the page of a {@link
+	 * Returns the function used to obtain the page of a {@link
 	 * CollectionResource}, if the endpoint was added through the {@link
 	 * com.liferay.vulcan.resource.builder.RoutesBuilder} and the function
 	 * therefore exists. Returns {@code Optional#empty()} otherwise.
@@ -63,32 +72,18 @@ public interface Routes<T> {
 	 * @return the function used to create the page, if the function exists;
 	 *         {@code Optional#empty()} otherwise
 	 */
-	public Optional<Function<Path, Function<Identifier, Page<T>>>>
-		getPageFunctionOptional();
+	public Optional<GetPageFunction<T>> getGetPageFunctionOptional();
 
 	/**
-	 * Returns the function that uses a POST request to create the single model
-	 * of a {@link CollectionResource}, if the endpoint was added through the
-	 * {@link com.liferay.vulcan.resource.builder.RoutesBuilder} and the
-	 * function therefore exists. Returns {@code Optional#empty()} otherwise.
-	 *
-	 * @return the function that uses a POST request to create the single model,
-	 *         if the function exists; {@code Optional#empty()} otherwise
-	 */
-	public Optional<Function<Identifier, Function<Map<String, Object>,
-		SingleModel<T>>>> getPostSingleModelFunctionOptional();
-
-	/**
-	 * Returns the function that uses a GET request to retrieve the single model
-	 * of a {@link CollectionResource}, if the endpoint was added through the
-	 * {@link com.liferay.vulcan.resource.builder.RoutesBuilder} and the
-	 * function therefore exists. Returns {@code Optional#empty()} otherwise.
+	 * Returns the function used to retrieve the single model of a {@link
+	 * CollectionResource}, if the endpoint was added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder} and the function
+	 * therefore exists. Returns {@code Optional#empty()} otherwise.
 	 *
 	 * @return the function that uses a GET request to retrieve the single
 	 *         model, if the function exists; {@code Optional#empty()} otherwise
 	 */
-	public Optional<Function<Path, SingleModel<T>>>
-		getSingleModelFunctionOptional();
+	public Optional<GetItemFunction<T>> getItemFunctionOptional();
 
 	/**
 	 * Returns the function used to update the single model of a {@link
@@ -99,7 +94,6 @@ public interface Routes<T> {
 	 * @return the function used to update the single model, if the function
 	 *         exists; {@code Optional#empty()} otherwise
 	 */
-	public Optional<Function<Path, Function<Map<String, Object>,
-		SingleModel<T>>>> getUpdateSingleModelFunctionOptional();
+	public Optional<UpdateItemFunction<T>> getUpdateItemFunctionOptional();
 
 }

@@ -53,6 +53,19 @@ public class VulcanDeveloperError extends Error {
 	}
 
 	/**
+	 * Represents the error the developer should throw when a documentation
+	 * message mapper is missing.
+	 */
+	public static class MustHaveDocumentationMessageMapper extends VulcanDeveloperError {
+
+		public MustHaveDocumentationMessageMapper(String mediaType) {
+			super(
+				"Documentation media type " + mediaType + " does not have a message mapper");
+		}
+
+	}
+
+	/**
 	 * Represents the error the developer should throw when an identifier's path
 	 * mapper is missing.
 	 */

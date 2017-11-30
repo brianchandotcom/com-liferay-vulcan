@@ -22,6 +22,8 @@ import com.liferay.vulcan.url.ServerURL;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.core.HttpHeaders;
 
 /**
@@ -79,6 +81,10 @@ public class RequestInfo {
 		return _httpHeaders;
 	}
 
+	public HttpServletRequest getHttpServletRequest() {
+		return _httpServletRequest;
+	}
+
 	/**
 	 * Returns the information about the language, if present. Returns {@code
 	 * Optional#empty()} otherwise.
@@ -115,10 +121,29 @@ public class RequestInfo {
 		 * @return the following step of the builder.
 		 * @review
 		 */
-		public ServerURLStep httpHeaders(HttpHeaders httpHeaders) {
+		public HttpServletRequestStep httpHeaders(HttpHeaders httpHeaders) {
 			_httpHeaders = httpHeaders;
 
-			return new ServerURLStep();
+			return new HttpServletRequestStep();
+		}
+
+		public class HttpServletRequestStep {
+
+			/**
+			 * Add information about the HTTP request to the builder.
+			 *
+			 * @param  httpServletRequest the HTTP request
+			 * @return the following step of the builder.
+			 * @review
+			 */
+			public ServerURLStep httpServletRequest(
+				HttpServletRequest httpServletRequest) {
+
+				_httpServletRequest = httpServletRequest;
+
+				return new ServerURLStep();
+			}
+
 		}
 
 		public class OptionalStep {
@@ -195,6 +220,7 @@ public class RequestInfo {
 		private Embedded _embedded;
 		private Fields _fields;
 		private HttpHeaders _httpHeaders;
+		private HttpServletRequest _httpServletRequest;
 		private Language _language;
 		private ServerURL _serverURL;
 
@@ -206,11 +232,13 @@ public class RequestInfo {
 		_httpHeaders = builder._httpHeaders;
 		_serverURL = builder._serverURL;
 		_embedded = builder._embedded;
+		_httpServletRequest = builder._httpServletRequest;
 	}
 
 	private Embedded _embedded;
 	private Fields _fields;
 	private HttpHeaders _httpHeaders;
+	private HttpServletRequest _httpServletRequest;
 	private Language _language;
 	private ServerURL _serverURL;
 

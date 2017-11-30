@@ -18,7 +18,6 @@ import com.liferay.vulcan.pagination.PageItems;
 import com.liferay.vulcan.pagination.Pagination;
 import com.liferay.vulcan.resource.CollectionResource;
 import com.liferay.vulcan.resource.Representor;
-import com.liferay.vulcan.resource.Representor.Builder;
 import com.liferay.vulcan.resource.Routes;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
@@ -50,7 +49,9 @@ public class BlogPostingCollectionResource
 	public Representor<BlogPosting, LongIdentifier> buildRepresentor(
 		Representor.Builder<BlogPosting, LongIdentifier> representorBuilder) {
 
-		return representorBuilder.identifier(
+		return representorBuilder.types(
+			"BlogPosting"
+		).identifier(
 			blogPosting -> blogPosting::getBlogPostingId
 		).addDate(
 			"dateCreated", BlogPosting::getCreateDate
@@ -70,8 +71,6 @@ public class BlogPostingCollectionResource
 			"fileFormat", blogPosting -> "text/html"
 		).addString(
 			"headline", BlogPosting::getTitle
-		).addType(
-			"BlogPosting"
 		).build();
 	}
 

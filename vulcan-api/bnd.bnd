@@ -5,8 +5,10 @@ Export-Package:\
 	com.google.gson.*,\
 	\
 	com.liferay.vulcan.alias,\
+	com.liferay.vulcan.alias.routes,\
 	com.liferay.vulcan.consumer,\
 	com.liferay.vulcan.converter,\
+	com.liferay.vulcan.documentation,\
 	com.liferay.vulcan.endpoint,\
 	com.liferay.vulcan.error,\
 	com.liferay.vulcan.exception,\
